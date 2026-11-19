@@ -53,6 +53,9 @@ public class AccountService implements UserDetailsService {
 
 
     public void deposit(Account account, BigDecimal amount) {
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new RuntimeException("Deposit amount must be greater than zero");
+        }
         account.setBalance(account.getBalance().add(amount));
         accountRepository.save(account);
 
