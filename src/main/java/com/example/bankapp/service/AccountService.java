@@ -53,6 +53,7 @@ public class AccountService implements UserDetailsService {
 
 
     public void deposit(Account account, BigDecimal amount) {
+        requireWholeCents(amount);
         account.setBalance(account.getBalance().add(amount));
         accountRepository.save(account);
 
@@ -66,6 +67,7 @@ public class AccountService implements UserDetailsService {
     }
 
     public void withdraw(Account account, BigDecimal amount) {
+        requireWholeCents(amount);
         if (account.getBalance().compareTo(amount) < 0) {
             throw new RuntimeException("Insufficient funds");
         }
@@ -80,6 +82,12 @@ public class AccountService implements UserDetailsService {
                 account
         );
         transactionRepository.save(transaction);
+    }
+
+    private void requireWholeCents(BigDecimal amount) {
+        if (amount.stripTrailingZeros().scale() > 2) {
+            throw new RuntimeException("Amount cannot have more than 2 decimal places");
+        }
     }
 
     public long calculateRewardsPoints(BigDecimal amount) {
@@ -121,6 +129,7 @@ public class AccountService implements UserDetailsService {
     }
 
     public void transferAmount(Account fromAccount, String toUsername, BigDecimal amount) {
+        requireWholeCents(amount);
         if (fromAccount.getBalance().compareTo(amount) < 0) {
             throw new RuntimeException("Insufficient funds");
         }
