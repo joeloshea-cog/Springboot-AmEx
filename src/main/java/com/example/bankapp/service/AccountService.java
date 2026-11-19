@@ -4,6 +4,9 @@ import com.example.bankapp.model.Account;
 import com.example.bankapp.model.Transaction;
 import com.example.bankapp.repository.AccountRepository;
 import com.example.bankapp.repository.TransactionRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -35,6 +39,9 @@ public class AccountService implements UserDetailsService {
     @Autowired
     private TransactionRepository transactionRepository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     public Account findAccountByUsername(String username) {
         return accountRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Account not found"));
     }
@@ -52,15 +59,19 @@ public class AccountService implements UserDetailsService {
     }
 
 
+    @Transactional
     public void deposit(Account account, BigDecimal amount) {
-        account.setBalance(account.getBalance().add(amount));
-        accountRepository.save(account);
+        // Lock the row and re-read the balance: under open-in-view the caller's copy may be stale.
+        Account locked = entityManager.find(Account.class, account.getId());
+        entityManager.refresh(locked, LockModeType.PESSIMISTIC_WRITE);
+        locked.setBalance(locked.getBalance().add(amount));
+        accountRepository.save(locked);
 
         Transaction transaction = new Transaction(
                 amount,
                 "Deposit",
                 LocalDateTime.now(),
-                account
+                locked
         );
         transactionRepository.save(transaction);
     }
