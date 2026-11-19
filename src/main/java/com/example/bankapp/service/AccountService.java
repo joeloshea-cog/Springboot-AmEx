@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -65,7 +66,9 @@ public class AccountService implements UserDetailsService {
         transactionRepository.save(transaction);
     }
 
+    @Transactional
     public void withdraw(Account account, BigDecimal amount) {
+        account = lockAccount(account.getId());
         if (account.getBalance().compareTo(amount) < 0) {
             throw new RuntimeException("Insufficient funds");
         }
@@ -120,13 +123,24 @@ public class AccountService implements UserDetailsService {
         return Arrays.asList(new SimpleGrantedAuthority("USER"));
     }
 
+    @Transactional
     public void transferAmount(Account fromAccount, String toUsername, BigDecimal amount) {
+        Long toAccountId = accountRepository.findIdByUsername(toUsername)
+                .orElseThrow(() -> new RuntimeException("Recipient account not found"));
+
+        // Lock both rows in id order so opposing transfers cannot deadlock
+        Account toAccount;
+        if (fromAccount.getId() < toAccountId) {
+            fromAccount = lockAccount(fromAccount.getId());
+            toAccount = lockAccount(toAccountId);
+        } else {
+            toAccount = lockAccount(toAccountId);
+            fromAccount = lockAccount(fromAccount.getId());
+        }
+
         if (fromAccount.getBalance().compareTo(amount) < 0) {
             throw new RuntimeException("Insufficient funds");
         }
-
-        Account toAccount = accountRepository.findByUsername(toUsername)
-                .orElseThrow(() -> new RuntimeException("Recipient account not found"));
 
         // Deduct from sender's account
         fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
@@ -154,4 +168,8 @@ public class AccountService implements UserDetailsService {
         transactionRepository.save(creditTransaction);
     }
 
+    private Account lockAccount(Long id) {
+        return accountRepository.findByIdForUpdate(id)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+    }
 }
