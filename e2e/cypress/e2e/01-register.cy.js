@@ -27,7 +27,7 @@ describe("Register", () => {
 
     cy.location("pathname").should("eq", "/dashboard");
     cy.contains("h2", `Welcome, ${username}`).should("be.visible");
-    cy.contains("h3", "Current Balance: $0").should("be.visible");
+    cy.contains("h3", "Card Balance: $0").should("be.visible");
   });
 
   it("rejects a username that already exists", () => {

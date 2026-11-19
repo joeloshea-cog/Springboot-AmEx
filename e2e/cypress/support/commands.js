@@ -23,9 +23,9 @@ Cypress.Commands.add("login", (username, password) => {
   );
 });
 
-/** Read "Current Balance: $123.45" from the dashboard and yield 123.45. */
+/** Read "Card Balance: $123.45" from the dashboard and yield 123.45. */
 Cypress.Commands.add("readBalance", () => {
-  cy.contains("h3", "Current Balance:")
+  cy.contains("h3", "Card Balance:")
     .invoke("text")
     .then((text) => Number(text.replace(/[^0-9.]/g, "")));
 });

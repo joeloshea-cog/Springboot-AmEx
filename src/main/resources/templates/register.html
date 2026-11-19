@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Register - Wells Fargo</title>
+    <title>Register | American Express</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: 'Times New Roman', Georgia, serif;
-            background-color: #F7F3E9;
-            color: #2E2A2B;
+            font-family: BentonSans, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #F7F8F9;
+            color: #3D3D3D;
             margin: 0;
             padding: 0;
             height: 100vh;
@@ -17,12 +17,12 @@
         }
 
         .navbar-custom {
-            background-color: #7A1216;
+            background-color: #006FCF;
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 1000;
-            border-bottom: 2px solid #B08D57;
+            border-bottom: 4px solid #00175A;
         }
 
         .navbar-custom a {
@@ -30,50 +30,54 @@
         }
 
         .navbar-custom .navbar-brand {
-            font-weight: bold;
+            font-weight: 700;
+            font-size: 22px;
+            letter-spacing: 0.5px;
         }
 
         .container {
             max-width: 460px;
             padding: 28px;
             background-color: #FFFFFF;
-            border-radius: 0;
-            border: 1px solid #B08D57;
+            border-radius: 8px;
+            border: 1px solid #E0E0E0;
             box-shadow: none;
             position: relative;
             text-align: left;
         }
 
         .container h2 {
-            color: #2E2A2B;
+            color: #3D3D3D;
             margin-bottom: 18px;
         }
 
         .form-group label {
-            color: #3A2F2F;
+            color: #3D3D3D;
             text-align: left;
             display: block;
         }
 
         .form-group input {
-            border: 1px solid #B08D57;
+            border: 1px solid #E0E0E0;
             background-color: #FFFFFF;
-            color: #2E2A2B;
+            color: #3D3D3D;
         }
 
         .btn {
-            background-color: #D71921;
-            border: 1px solid #7A1216;
+            background-color: #006FCF;
+            border: 1px solid #006FCF;
+            border-radius: 4px;
+            font-weight: 700;
             color: #FFFFFF;
             transition: background-color 0.2s ease;
         }
 
         .btn:hover {
-            background-color: #B5151C;
+            background-color: #00175A;
         }
 
         .custom-link {
-            color: #7A1216;
+            color: #006FCF;
             text-decoration: none;
             font-weight: bold;
         }
@@ -83,7 +87,7 @@
         }
 
         .footer {
-            background-color: #7A1216;
+            background-color: #00175A;
             color: #FFFFFF;
             padding: 12px 0;
             font-size: 13px;
@@ -91,15 +95,18 @@
             bottom: 0;
             width: 100%;
             text-align: center;
-            border-top: 2px solid #B08D57;
+            border-top: none;
+        }
+
+        .footer a {
+            color: #FFFFFF;
         }
     </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-custom">
     <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="/images/wells-fargo-logo.png" alt="Wells Fargo" style="height:28px;margin-right:10px;">
-        Wells Fargo
+        American Express
     </a>
 </nav>
 
@@ -124,7 +131,7 @@
 </div>
 
 <footer class="footer">
-    <p>&copy; 2024 Wells Fargo Bank, N.A. All rights reserved. | <a href="#" class="custom-link">Privacy Policy</a> | <a href="#" class="custom-link">Terms of Service</a></p>
+    <p>&copy; 2026 American Express. All rights reserved. | <a href="#" class="custom-link">Privacy Policy</a> | <a href="#" class="custom-link">Terms of Service</a></p>
 </footer>
 
 </body>

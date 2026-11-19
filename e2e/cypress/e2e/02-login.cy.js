@@ -10,7 +10,7 @@ describe("Login", () => {
 
     cy.location("pathname").should("eq", "/dashboard");
     cy.contains("h2", `Welcome, ${user}`).should("be.visible");
-    cy.contains("h3", "Current Balance: $500.00").should("be.visible");
+    cy.contains("h3", "Card Balance: $500.00").should("be.visible");
     cy.contains(".account-details p", "Account Number:").should("be.visible");
     cy.get("nav").within(() => {
       cy.contains("a", "Dashboard").should("have.attr", "href", "/dashboard");
