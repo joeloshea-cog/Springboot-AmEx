@@ -17,6 +17,7 @@ public class Account implements UserDetails {
     private String username;
     private String password;
     private BigDecimal balance;
+    private Long rewardsPoints;
 
     @OneToMany(mappedBy = "account")
     private List<Transaction> transactions;
@@ -75,6 +76,14 @@ public class Account implements UserDetails {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
+    }
+
+    public long getRewardsPoints() {
+        return rewardsPoints == null ? 0L : rewardsPoints;
+    }
+
+    public void setRewardsPoints(long rewardsPoints) {
+        this.rewardsPoints = rewardsPoints;
     }
 
     public List<Transaction> getTransactions() {

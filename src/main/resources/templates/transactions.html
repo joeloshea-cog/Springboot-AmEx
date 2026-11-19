@@ -78,6 +78,23 @@
             color: #B41601 !important;
         }
 
+        .btn-filter {
+            background-color: #006FCF;
+            border: 1px solid #006FCF;
+            border-radius: 4px;
+            color: #FFFFFF;
+            font-weight: 700;
+        }
+
+        .btn-filter:hover {
+            background-color: #00175A;
+            color: #FFFFFF;
+        }
+
+        .statement-filter label {
+            font-weight: 700;
+        }
+
         .custom-link {
             color: #006FCF;
             text-decoration: none;
@@ -103,6 +120,14 @@
 
 <div class="container">
     <h2 class="text-center">Transaction History</h2>
+    <form method="get" action="/transactions" class="statement-filter form-inline justify-content-center mb-3">
+        <label for="from" class="mr-2">Statement from</label>
+        <input type="date" id="from" name="from" class="form-control mr-3" th:value="${from}" />
+        <label for="to" class="mr-2">to</label>
+        <input type="date" id="to" name="to" class="form-control mr-3" th:value="${to}" />
+        <button type="submit" class="btn btn-filter mr-2">Filter</button>
+        <a href="/transactions" class="custom-link">Clear</a>
+    </form>
     <div class="table-responsive table-custom">
         <table class="table table-striped">
             <thead>

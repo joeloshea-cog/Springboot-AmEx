@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,6 +23,8 @@ import java.util.List;
 
 @Service
 public class AccountService implements UserDetailsService {
+
+    private static final BigDecimal DOUBLE_POINTS_THRESHOLD = new BigDecimal("500");
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -66,6 +70,7 @@ public class AccountService implements UserDetailsService {
             throw new RuntimeException("Insufficient funds");
         }
         account.setBalance(account.getBalance().subtract(amount));
+        account.setRewardsPoints(account.getRewardsPoints() + calculateRewardsPoints(amount));
         accountRepository.save(account);
 
         Transaction transaction = new Transaction(
@@ -77,8 +82,23 @@ public class AccountService implements UserDetailsService {
         transactionRepository.save(transaction);
     }
 
+    public long calculateRewardsPoints(BigDecimal amount) {
+        long points = amount.setScale(0, RoundingMode.DOWN).longValue();
+        if (amount.compareTo(DOUBLE_POINTS_THRESHOLD) > 0) {
+            return points * 2;
+        }
+        return points;
+    }
+
     public List<Transaction> getTransactionHistory(Account account) {
         return transactionRepository.findByAccountId(account.getId());
+    }
+
+    public List<Transaction> getTransactionHistory(Account account, LocalDate from, LocalDate to) {
+        return getTransactionHistory(account).stream()
+                .filter(t -> from == null || !t.getTimestamp().isBefore(from.atStartOfDay()))
+                .filter(t -> to == null || t.getTimestamp().isBefore(to.atStartOfDay()))
+                .toList();
     }
 
     @Override

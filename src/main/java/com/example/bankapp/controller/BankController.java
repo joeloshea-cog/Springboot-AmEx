@@ -3,6 +3,7 @@ package com.example.bankapp.controller;
 import com.example.bankapp.model.Account;
 import com.example.bankapp.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Controller
 public class BankController {
@@ -72,10 +74,14 @@ public class BankController {
     }
 
     @GetMapping("/transactions")
-    public String transactionHistory(Model model) {
+    public String transactionHistory(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+                                     @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+                                     Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Account account = accountService.findAccountByUsername(username);
-        model.addAttribute("transactions", accountService.getTransactionHistory(account));
+        model.addAttribute("transactions", accountService.getTransactionHistory(account, from, to));
+        model.addAttribute("from", from);
+        model.addAttribute("to", to);
         return "transactions";
     }
 

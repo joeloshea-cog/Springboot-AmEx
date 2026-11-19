@@ -93,6 +93,12 @@
             font-weight: 700;
         }
 
+        .rewards-points {
+            color: #00175A;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
         .error {
             color: #B41601;
         }
@@ -136,6 +142,7 @@
     <div class="text-center">
         <h2><span th:text="'Welcome, ' + ${account.username}"></span> <small class="card-member">Card Member</small></h2>
         <h3 th:text="'Card Balance: $' + ${account.balance}"></h3>
+        <p class="rewards-points"><strong>Membership Rewards&reg; points:</strong> <span th:text="${#numbers.formatInteger(account.rewardsPoints, 1, 'COMMA')}"></span></p>
     </div>
 
     <!-- Account Details Section -->
