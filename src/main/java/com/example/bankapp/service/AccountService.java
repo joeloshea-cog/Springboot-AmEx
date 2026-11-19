@@ -97,7 +97,7 @@ public class AccountService implements UserDetailsService {
     public List<Transaction> getTransactionHistory(Account account, LocalDate from, LocalDate to) {
         return getTransactionHistory(account).stream()
                 .filter(t -> from == null || !t.getTimestamp().isBefore(from.atStartOfDay()))
-                .filter(t -> to == null || t.getTimestamp().isBefore(to.atStartOfDay()))
+                .filter(t -> to == null || t.getTimestamp().isBefore(to.plusDays(1).atStartOfDay()))
                 .toList();
     }
 
