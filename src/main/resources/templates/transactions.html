@@ -4,156 +4,364 @@
     <title>Transaction History | American Express</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        @font-face { font-family: "BentonSans"; font-weight: 300; font-display: swap; src: url("https://www.aexp-static.com/nav/ngn/fonts/325e6ad0-38fb-4bad-861c-d965eab101d5-3.woff") format("woff"); }
+        @font-face { font-family: "BentonSans"; font-weight: 400; font-display: swap; src: url("https://www.aexp-static.com/nav/ngn/fonts/3be50273-0b2e-4aef-ae68-882eacd611f9-3.woff") format("woff"); }
+        @font-face { font-family: "BentonSans"; font-weight: 500; font-display: swap; src: url("https://www.aexp-static.com/nav/ngn/fonts/0fababca-4914-46dd-9b0f-efbd51f67ae8-3.woff") format("woff"); }
+
         body {
-            font-family: BentonSans, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: BentonSans, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 15px;
             background-color: #F7F8F9;
-            color: #3D3D3D;
+            color: #333333;
             margin: 0;
-            padding: 0;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
             flex-direction: column;
         }
 
-        .navbar-custom {
+        a {
+            color: #006FCF;
+        }
+
+        .axp-header {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #ECEDEE;
+            height: 61px;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+        }
+
+        .axp-wordmark {
+            color: #006FCF !important;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-weight: 800;
+            font-size: 19px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none !important;
+            margin-right: 32px;
+        }
+
+        .axp-nav-container {
+            flex: 1;
+        }
+
+        .axp-nav {
+            display: flex;
+            align-items: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            flex: 1;
+        }
+
+        .axp-nav a {
+            font-family: "Helvetica Neue", Roboto, sans-serif;
+            color: #006FCF;
+            padding: 11px 0;
+            margin-right: 40px;
+        }
+
+        .axp-nav a:hover {
+            text-decoration: underline;
+        }
+
+        .axp-nav .axp-nav-right {
+            margin-left: auto;
+        }
+
+        .axp-nav .axp-nav-right a {
+            margin-right: 0;
+        }
+
+        .btn-axp,
+        .axp-nav a.btn-axp {
+            display: inline-block;
             background-color: #006FCF;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            border-bottom: 4px solid #00175A;
-        }
-
-        .navbar-custom a {
-            color: #ffffff !important;
-        }
-
-        .navbar-custom .navbar-brand {
-            font-weight: 700;
-            font-size: 22px;
-            letter-spacing: 0.5px;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin-top: 80px;
+            color: #FFFFFF;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            font-family: BentonSans, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 22px;
+            padding: 13px 24px;
             text-align: center;
+            text-decoration: none;
+            cursor: pointer;
         }
 
-        h2 {
-            margin-bottom: 20px;
+        .axp-nav a.btn-axp {
+            font-size: 15px;
+            padding: 8px 20px;
+            border-radius: 3px;
+        }
+
+        .btn-axp:hover,
+        .btn-axp:focus,
+        .axp-nav a.btn-axp:hover {
+            background-color: #005DAE;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        .btn-axp-secondary {
+            background-color: #FFFFFF;
+            color: #006FCF;
+            border: 1px solid #006FCF;
+        }
+
+        .btn-axp-secondary:hover,
+        .btn-axp-secondary:focus {
+            background-color: #E0EEF9;
+            color: #006FCF;
+        }
+
+        .axp-hero {
+            background-color: #00175A;
+            color: #FFFFFF;
+            padding: 52px 0 96px;
+        }
+
+        .axp-hero .axp-eyebrow {
+            font-family: HelveticaNeue-Bold, Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 10px;
+        }
+
+        .axp-hero .axp-headline {
+            font-family: BentonSans, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 32px;
+            font-weight: 300;
+            line-height: 40px;
+            margin: 0;
+        }
+
+        .axp-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 15px;
+            width: 100%;
+        }
+
+        .axp-main {
+            flex: 1;
+            margin-top: -60px;
+            padding-bottom: 48px;
+        }
+
+        .axp-tile {
+            background-color: #FFFFFF;
+            border-radius: 5px;
+            box-shadow: rgba(0, 0, 0, 0.1) 0 2px 5px 0;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .axp-tile-title {
+            font-family: BentonSans, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 24px;
+            font-weight: 300;
+            line-height: 38px;
+            color: #00175A;
+            margin: 0 0 20px;
+        }
+
+        .form-group label {
+            font-family: HelveticaNeue-Bold, Helvetica, Arial, sans-serif;
+            font-weight: 600;
+            color: #00175A;
+        }
+
+        .form-control {
+            height: 50px;
+            border: 1px solid #C8C9C7;
+            border-radius: 4px;
+            color: #333333;
+            font-size: 16px;
+        }
+
+        .form-control:focus {
+            border-color: #006FCF;
+            box-shadow: 0 0 0 1px #006FCF;
+        }
+
+        .axp-footer {
+            background-color: #FFFFFF;
+            border-top: 1px solid #ECEDEE;
+            font-family: "Helvetica Neue", Roboto, sans-serif;
+            padding: 28px 32px 20px;
+        }
+
+        .axp-footer .axp-wordmark {
+            font-size: 18px;
+            display: inline-block;
+            margin-bottom: 18px;
+        }
+
+        .axp-footer-links {
+            list-style: none;
+            margin: 0 0 18px;
+            padding: 0;
+        }
+
+        .axp-footer-links li {
+            display: inline-block;
+            line-height: 23px;
+        }
+
+        .axp-footer-links li + li::before {
+            content: "|";
+            color: #97999B;
+            margin: 0 10px;
+        }
+
+        .axp-footer-copy {
+            color: #000000;
+            margin: 0;
+        }
+
+        .axp-hero h2 {
+            font-family: BentonSans, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 32px;
+            font-weight: 300;
+            line-height: 40px;
+            margin: 0;
+        }
+
+        .statement-filter {
+            background-color: #F2F3F7;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .statement-filter label {
+            font-family: HelveticaNeue-Bold, Helvetica, Arial, sans-serif;
+            font-weight: 600;
+            color: #00175A;
+        }
+
+        .statement-filter .form-control {
+            height: 44px;
+        }
+
+        .statement-filter .btn-axp {
+            padding: 10px 24px;
         }
 
         .table-custom {
-            background-color: #FFFFFF;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #E0E0E0;
-            box-shadow: none;
             overflow-x: auto;
+        }
+
+        .table thead th {
+            background-color: #FFFFFF;
+            border-top: none;
+            border-bottom: 2px solid #00175A;
+            color: #00175A;
+            font-family: HelveticaNeue-Bold, Helvetica, Arial, sans-serif;
+            font-weight: 600;
+            padding: 14px 15px;
+        }
+
+        .table td {
+            border-top: 1px solid #ECEDEE;
+            padding: 14px 15px;
+            color: #333333;
         }
 
         .table-striped tbody tr:nth-of-type(odd) {
             background-color: #F7F8F9;
         }
 
-        .table-striped td, .table-striped th {
-            color: #3D3D3D;
-            font-weight: bold;
-            padding: 15px;
-            border-bottom: 1px solid #E0E0E0;
+        .table td.text-success {
+            color: #008767 !important;
+            font-weight: 500;
         }
 
-        .table-striped th {
-            background-color: #E0EEF9;
+        .table td.text-danger {
+            color: #B42C01 !important;
+            font-weight: 500;
         }
 
-        .text-success {
-            color: #00804A !important;
-        }
-
-        .text-danger {
-            color: #B41601 !important;
-        }
-
-        .btn-filter {
-            background-color: #006FCF;
-            border: 1px solid #006FCF;
-            border-radius: 4px;
-            color: #FFFFFF;
-            font-weight: 700;
-        }
-
-        .btn-filter:hover {
-            background-color: #00175A;
-            color: #FFFFFF;
-        }
-
-        .statement-filter label {
-            font-weight: 700;
-        }
-
-        .custom-link {
-            color: #006FCF;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .custom-link:hover {
-            text-decoration: underline;
+        .axp-back {
+            margin: 8px 0 0;
         }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-custom">
-    <a class="navbar-brand d-flex align-items-center" href="#">
-        American Express
-    </a>
-    <ul class="navbar-nav ml-auto">
-        <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link" href="/transactions">Transactions</a></li>
-        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
-    </ul>
-</nav>
+<header class="axp-header">
+    <a class="axp-wordmark" href="/dashboard">American Express</a>
+    <nav class="axp-nav-container">
+        <ul class="axp-nav">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/transactions">Transactions</a></li>
+            <li class="axp-nav-right"><a class="btn-axp" href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+</header>
 
-<div class="container">
-    <h2 class="text-center">Transaction History</h2>
-    <form method="get" action="/transactions" class="statement-filter form-inline justify-content-center mb-3">
-        <label for="from" class="mr-2">Statement from</label>
-        <input type="date" id="from" name="from" class="form-control mr-3" th:value="${from}" />
-        <label for="to" class="mr-2">to</label>
-        <input type="date" id="to" name="to" class="form-control mr-3" th:value="${to}" />
-        <button type="submit" class="btn btn-filter mr-2">Filter</button>
-        <a href="/transactions" class="custom-link">Clear</a>
-    </form>
-    <div class="table-responsive table-custom">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Type</th>
-                <th>Amount</th>
-                <th>Date</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="transaction : ${transactions}">
-                <td th:text="${transaction.id}"></td>
-                <td th:text="${transaction.type}"></td>
-                <td th:text="${transaction.amount}"
-                    th:classappend="${transaction.type.contains('Transfer In') || transaction.type == 'Deposit'} ? 'text-success' : 'text-danger'">
-                    <span th:text="${transaction.type.contains('Transfer In') || transaction.type == 'Deposit'} ? '+$' + transaction.amount : '-$' + transaction.amount"></span>
-                </td>
-                <td th:text="${transaction.timestamp}"></td>
-            </tr>
-            </tbody>
-        </table>
+<section class="axp-hero">
+    <div class="axp-container">
+        <p class="axp-eyebrow">Statements</p>
+        <h2>Transaction History</h2>
     </div>
+</section>
 
-    <p class="text-center"><a href="/dashboard" class="custom-link">Back to Dashboard</a></p>
-</div>
+<main class="axp-main">
+    <div class="axp-container">
+        <div class="axp-tile">
+            <form method="get" action="/transactions" class="statement-filter form-inline">
+                <label for="from" class="mr-2">Statement from</label>
+                <input type="date" id="from" name="from" class="form-control mr-3" th:value="${from}" />
+                <label for="to" class="mr-2">to</label>
+                <input type="date" id="to" name="to" class="form-control mr-3" th:value="${to}" />
+                <button type="submit" class="btn-axp mr-3">Filter</button>
+                <a href="/transactions">Clear</a>
+            </form>
 
+            <div class="table-responsive table-custom">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="transaction : ${transactions}">
+                        <td th:text="${transaction.id}"></td>
+                        <td th:text="${transaction.type}"></td>
+                        <td th:text="${transaction.amount}"
+                            th:classappend="${transaction.type.contains('Transfer In') || transaction.type == 'Deposit'} ? 'text-success' : 'text-danger'">
+                            <span th:text="${transaction.type.contains('Transfer In') || transaction.type == 'Deposit'} ? '+$' + transaction.amount : '-$' + transaction.amount"></span>
+                        </td>
+                        <td th:text="${transaction.timestamp}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="axp-back"><a href="/dashboard">Back to Dashboard</a></p>
+        </div>
+    </div>
+</main>
+
+<footer class="axp-footer">
+    <span class="axp-wordmark">American Express</span>
+    <ul class="axp-footer-links">
+            <li><a href="#">Website Rules and Regulations</a></li>
+            <li><a href="#">Trademarks</a></li>
+            <li><a href="#">Privacy Centre</a></li>
+            <li><a href="#">Security Alerts</a></li>
+            <li><a href="#">Accessibility</a></li>
+            <li><a href="#">Cookie Policy</a></li>
+    </ul>
+    <p class="axp-footer-copy">Copyright &copy; 2026 <a href="#">American Express Company</a></p>
+</footer>
 </body>
 </html>

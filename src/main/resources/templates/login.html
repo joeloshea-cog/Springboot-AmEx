@@ -4,135 +4,290 @@
     <title>Log In | American Express</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        @font-face { font-family: "BentonSans"; font-weight: 300; font-display: swap; src: url("https://www.aexp-static.com/nav/ngn/fonts/325e6ad0-38fb-4bad-861c-d965eab101d5-3.woff") format("woff"); }
+        @font-face { font-family: "BentonSans"; font-weight: 400; font-display: swap; src: url("https://www.aexp-static.com/nav/ngn/fonts/3be50273-0b2e-4aef-ae68-882eacd611f9-3.woff") format("woff"); }
+        @font-face { font-family: "BentonSans"; font-weight: 500; font-display: swap; src: url("https://www.aexp-static.com/nav/ngn/fonts/0fababca-4914-46dd-9b0f-efbd51f67ae8-3.woff") format("woff"); }
+
         body {
-            font-family: BentonSans, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: BentonSans, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 15px;
             background-color: #F7F8F9;
-            color: #3D3D3D;
+            color: #333333;
             margin: 0;
-            padding: 0;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+        }
+
+        a {
+            color: #006FCF;
+        }
+
+        .axp-header {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #ECEDEE;
+            height: 61px;
+            padding: 0 32px;
+            display: flex;
             align-items: center;
         }
 
-        .navbar-custom {
-            background-color: #006FCF;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            border-bottom: 4px solid #00175A;
+        .axp-wordmark {
+            color: #006FCF !important;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-weight: 800;
+            font-size: 19px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none !important;
+            margin-right: 32px;
         }
 
-        .navbar-custom a {
-            color: #ffffff !important;
+        .axp-nav-container {
+            flex: 1;
         }
 
-        .navbar-custom .navbar-brand {
-            font-weight: 700;
-            font-size: 22px;
-            letter-spacing: 0.5px;
+        .axp-nav {
+            display: flex;
+            align-items: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            flex: 1;
         }
 
-        .container {
-            max-width: 460px;
-            padding: 28px;
-            background-color: #FFFFFF;
-            border-radius: 8px;
-            border: 1px solid #E0E0E0;
-            box-shadow: none;
-            position: relative;
-            text-align: left;
-        }
-
-        .container h2 {
-            color: #3D3D3D;
-            margin-bottom: 18px;
-        }
-
-        .form-group label {
-            color: #3D3D3D;
-            text-align: left;
-            display: block;
-        }
-
-        .form-group input {
-            border: 1px solid #E0E0E0;
-            background-color: #FFFFFF;
-            color: #3D3D3D;
-        }
-
-        .btn {
-            background-color: #006FCF;
-            border: 1px solid #006FCF;
-            border-radius: 4px;
-            font-weight: 700;
-            color: #FFFFFF;
-            transition: background-color 0.2s ease;
-        }
-
-        .btn:hover {
-            background-color: #00175A;
-        }
-
-        .custom-link {
+        .axp-nav a {
+            font-family: "Helvetica Neue", Roboto, sans-serif;
             color: #006FCF;
-            text-decoration: none;
-            font-weight: bold;
+            padding: 11px 0;
+            margin-right: 40px;
         }
 
-        .custom-link:hover {
+        .axp-nav a:hover {
             text-decoration: underline;
         }
 
-        .footer {
-            background-color: #00175A;
-            color: #FFFFFF;
-            padding: 12px 0;
-            font-size: 13px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            border-top: none;
+        .axp-nav .axp-nav-right {
+            margin-left: auto;
         }
 
-        .footer a {
+        .axp-nav .axp-nav-right a {
+            margin-right: 0;
+        }
+
+        .btn-axp,
+        .axp-nav a.btn-axp {
+            display: inline-block;
+            background-color: #006FCF;
             color: #FFFFFF;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            font-family: BentonSans, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 22px;
+            padding: 13px 24px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .axp-nav a.btn-axp {
+            font-size: 15px;
+            padding: 8px 20px;
+            border-radius: 3px;
+        }
+
+        .btn-axp:hover,
+        .btn-axp:focus,
+        .axp-nav a.btn-axp:hover {
+            background-color: #005DAE;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        .btn-axp-secondary {
+            background-color: #FFFFFF;
+            color: #006FCF;
+            border: 1px solid #006FCF;
+        }
+
+        .btn-axp-secondary:hover,
+        .btn-axp-secondary:focus {
+            background-color: #E0EEF9;
+            color: #006FCF;
+        }
+
+        .axp-hero {
+            background-color: #00175A;
+            color: #FFFFFF;
+            padding: 52px 0 96px;
+        }
+
+        .axp-hero .axp-eyebrow {
+            font-family: HelveticaNeue-Bold, Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 10px;
+        }
+
+        .axp-hero .axp-headline {
+            font-family: BentonSans, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 32px;
+            font-weight: 300;
+            line-height: 40px;
+            margin: 0;
+        }
+
+        .axp-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 15px;
+            width: 100%;
+        }
+
+        .axp-main {
+            flex: 1;
+            margin-top: -60px;
+            padding-bottom: 48px;
+        }
+
+        .axp-tile {
+            background-color: #FFFFFF;
+            border-radius: 5px;
+            box-shadow: rgba(0, 0, 0, 0.1) 0 2px 5px 0;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .axp-tile-title {
+            font-family: BentonSans, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 24px;
+            font-weight: 300;
+            line-height: 38px;
+            color: #00175A;
+            margin: 0 0 20px;
+        }
+
+        .form-group label {
+            font-family: HelveticaNeue-Bold, Helvetica, Arial, sans-serif;
+            font-weight: 600;
+            color: #00175A;
+        }
+
+        .form-control {
+            height: 50px;
+            border: 1px solid #C8C9C7;
+            border-radius: 4px;
+            color: #333333;
+            font-size: 16px;
+        }
+
+        .form-control:focus {
+            border-color: #006FCF;
+            box-shadow: 0 0 0 1px #006FCF;
+        }
+
+        .axp-footer {
+            background-color: #FFFFFF;
+            border-top: 1px solid #ECEDEE;
+            font-family: "Helvetica Neue", Roboto, sans-serif;
+            padding: 28px 32px 20px;
+        }
+
+        .axp-footer .axp-wordmark {
+            font-size: 18px;
+            display: inline-block;
+            margin-bottom: 18px;
+        }
+
+        .axp-footer-links {
+            list-style: none;
+            margin: 0 0 18px;
+            padding: 0;
+        }
+
+        .axp-footer-links li {
+            display: inline-block;
+            line-height: 23px;
+        }
+
+        .axp-footer-links li + li::before {
+            content: "|";
+            color: #97999B;
+            margin: 0 10px;
+        }
+
+        .axp-footer-copy {
+            color: #000000;
+            margin: 0;
+        }
+
+        .axp-auth {
+            max-width: 460px;
+        }
+
+        .axp-auth .btn-axp {
+            width: 100%;
+        }
+
+        .axp-auth-switch {
+            margin: 20px 0 0;
         }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-custom">
-    <a class="navbar-brand d-flex align-items-center" href="#">
-        American Express
-    </a>
-</nav>
+<header class="axp-header">
+    <a class="axp-wordmark" href="/login">American Express</a>
+    <nav class="axp-nav-container">
+        <ul class="axp-nav">
+            <li class="axp-nav-right"><a class="btn-axp" href="/login">Log In</a></li>
+        </ul>
+    </nav>
+</header>
 
-<div class="container">
-    <h2 class="text-left">Login</h2>
-    <form method="post" action="/login">
-        <div class="form-group">
-            <label>Username:</label>
-            <input type="text" class="form-control" name="username" required />
-        </div>
-        <div class="form-group">
-            <label>Password:</label>
-            <input type="password" class="form-control" name="password" required />
-        </div>
-        <button type="submit" class="btn btn-block">Login</button>
-    </form>
-    <p class="mt-3">Don't have an account? <a href="/register" class="custom-link">Register here</a></p>
-
-    <div th:if="${param.error}" class="alert alert-danger mt-3 text-center">
-        Invalid username or password.
+<section class="axp-hero">
+    <div class="axp-container">
+        <p class="axp-eyebrow">Log In</p>
+        <p class="axp-headline">Manage your Card account, check your balance and move money.</p>
     </div>
-</div>
+</section>
 
-<footer class="footer">
-    <p>&copy; 2026 American Express. All rights reserved. | <a href="#" class="custom-link">Privacy Policy</a> | <a href="#" class="custom-link">Terms of Service</a></p>
+<main class="axp-main">
+    <div class="axp-container">
+        <div class="axp-tile axp-auth">
+            <h2 class="axp-tile-title">Login</h2>
+            <form method="post" action="/login">
+                <div class="form-group">
+                    <label>Username:</label>
+                    <input type="text" class="form-control" name="username" required />
+                </div>
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="password" class="form-control" name="password" required />
+                </div>
+                <button type="submit" class="btn-axp">Login</button>
+            </form>
+            <p class="axp-auth-switch">Don't have an account? <a href="/register">Register here</a></p>
+
+            <div th:if="${param.error}" class="alert alert-danger mt-3 text-center">
+                Invalid username or password.
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="axp-footer">
+    <span class="axp-wordmark">American Express</span>
+    <ul class="axp-footer-links">
+            <li><a href="#">Website Rules and Regulations</a></li>
+            <li><a href="#">Trademarks</a></li>
+            <li><a href="#">Privacy Centre</a></li>
+            <li><a href="#">Security Alerts</a></li>
+            <li><a href="#">Accessibility</a></li>
+            <li><a href="#">Cookie Policy</a></li>
+    </ul>
+    <p class="axp-footer-copy">Copyright &copy; 2026 <a href="#">American Express Company</a></p>
 </footer>
-
 </body>
 </html>
