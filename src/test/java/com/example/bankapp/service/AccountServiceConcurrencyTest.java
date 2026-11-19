@@ -3,10 +3,14 @@ package com.example.bankapp.service;
 import com.example.bankapp.model.Account;
 import com.example.bankapp.repository.AccountRepository;
 import com.example.bankapp.repository.TransactionRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.orm.jpa.EntityManagerHolder;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -25,7 +29,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 class AccountServiceConcurrencyTest {
 
-    private static final int THREADS = 20;
+    // Below the default Hikari pool size (10): each open-in-view thread holds a connection at the barrier
+    private static final int THREADS = 8;
     private static final BigDecimal HUNDRED = new BigDecimal("100.00");
 
     @Autowired
@@ -36,6 +41,9 @@ class AccountServiceConcurrencyTest {
 
     @Autowired
     private TransactionRepository transactionRepository;
+
+    @Autowired
+    private EntityManagerFactory entityManagerFactory;
 
     @Test
     void concurrentWithdrawalsCannotOverdraw() throws Exception {
@@ -72,7 +80,8 @@ class AccountServiceConcurrencyTest {
         return username;
     }
 
-    // Each thread loads the account the way BankController does, then all threads call the service at once.
+    // Each thread mimics one web request: an open-in-view EntityManager is bound, the account is loaded
+    // the way BankController does, then all threads call the service at once.
     private int runConcurrently(Consumer<Account> action, String username) throws Exception {
         CyclicBarrier barrier = new CyclicBarrier(THREADS);
         ExecutorService pool = Executors.newFixedThreadPool(THREADS);
@@ -80,13 +89,18 @@ class AccountServiceConcurrencyTest {
             List<Future<Boolean>> results = new ArrayList<>();
             for (int i = 0; i < THREADS; i++) {
                 results.add(pool.submit(() -> {
-                    Account account = accountService.findAccountByUsername(username);
-                    barrier.await(10, TimeUnit.SECONDS);
+                    EntityManager entityManager = entityManagerFactory.createEntityManager();
+                    TransactionSynchronizationManager.bindResource(entityManagerFactory, new EntityManagerHolder(entityManager));
                     try {
+                        Account account = accountService.findAccountByUsername(username);
+                        barrier.await(10, TimeUnit.SECONDS);
                         action.accept(account);
                         return true;
                     } catch (RuntimeException e) {
                         return false;
+                    } finally {
+                        TransactionSynchronizationManager.unbindResource(entityManagerFactory);
+                        entityManager.close();
                     }
                 }));
             }

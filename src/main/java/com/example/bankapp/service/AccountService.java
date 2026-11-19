@@ -4,6 +4,9 @@ import com.example.bankapp.model.Account;
 import com.example.bankapp.model.Transaction;
 import com.example.bankapp.repository.AccountRepository;
 import com.example.bankapp.repository.TransactionRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,6 +38,9 @@ public class AccountService implements UserDetailsService {
 
     @Autowired
     private TransactionRepository transactionRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public Account findAccountByUsername(String username) {
         return accountRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Account not found"));
@@ -125,8 +131,9 @@ public class AccountService implements UserDetailsService {
 
     @Transactional
     public void transferAmount(Account fromAccount, String toUsername, BigDecimal amount) {
-        Long toAccountId = accountRepository.findIdByUsername(toUsername)
-                .orElseThrow(() -> new RuntimeException("Recipient account not found"));
+        Long toAccountId = accountRepository.findByUsername(toUsername)
+                .orElseThrow(() -> new RuntimeException("Recipient account not found"))
+                .getId();
 
         // Lock both rows in id order so opposing transfers cannot deadlock
         Account toAccount;
@@ -168,8 +175,11 @@ public class AccountService implements UserDetailsService {
         transactionRepository.save(creditTransaction);
     }
 
+    // Re-reads the row under a write lock so a stale copy in the persistence context is never used
     private Account lockAccount(Long id) {
-        return accountRepository.findByIdForUpdate(id)
+        Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
+        entityManager.refresh(account, LockModeType.PESSIMISTIC_WRITE);
+        return account;
     }
 }
